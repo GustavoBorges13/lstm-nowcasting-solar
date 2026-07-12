@@ -1,0 +1,28 @@
+# Ambientes Virtuais
+venv/
+env/
+.env/
+
+# Cache do Python
+__pycache__/
+*.pyc
+.Python
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Pastas de IDEs
+.vscode/
+.idea/
+
+# livros
+books/
+
+prova 1/
+prova 2/
+
+# Ignorar as imagens e logs de testes dinâmicos 
+# (Mas manter as imagens que comecem com "slide_" para a apresentação)
+#teste_*.png
+#logs/teste_*.txt

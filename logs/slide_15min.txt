@@ -1,0 +1,115 @@
+<span class='text-sky-400'>[1] Carregando os dados do dataset...</span>
+<span class='text-sky-400'>[2] Processando datas e agrupando...</span>
+<span class='text-sky-400'>[3] Normalizando os dados (MinMaxScaler)...</span>
+<span class='text-sky-400'>[4] Aplicando Janela Deslizante (Passos: 8, Horizonte: 1)...</span>
+<span class='text-sky-400'>[5] Construindo Arquitetura LSTM (100 -> 50 -> Funil)...</span>
+<span class='text-sky-400 font-bold'>[6] Iniciando treinamento acelerado (Adam Otimizador)...</span>
+<span class='text-slate-100 font-bold'>Epoch 1/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 2s 14ms/step - loss: <span class='text-amber-400'>0.0196</span> - val_loss: <span class='text-sky-400'>0.0095</span>
+<span class='text-slate-100 font-bold'>Epoch 2/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0102</span> - val_loss: <span class='text-sky-400'>0.0074</span>
+<span class='text-slate-100 font-bold'>Epoch 3/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0085</span> - val_loss: <span class='text-sky-400'>0.0068</span>
+<span class='text-slate-100 font-bold'>Epoch 4/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0078</span> - val_loss: <span class='text-sky-400'>0.0061</span>
+<span class='text-slate-100 font-bold'>Epoch 5/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0077</span> - val_loss: <span class='text-sky-400'>0.0054</span>
+<span class='text-slate-100 font-bold'>Epoch 6/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0071</span> - val_loss: <span class='text-sky-400'>0.0049</span>
+<span class='text-slate-100 font-bold'>Epoch 7/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0073</span> - val_loss: <span class='text-sky-400'>0.0048</span>
+<span class='text-slate-100 font-bold'>Epoch 8/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0069</span> - val_loss: <span class='text-sky-400'>0.0050</span>
+<span class='text-slate-100 font-bold'>Epoch 9/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0070</span> - val_loss: <span class='text-sky-400'>0.0048</span>
+<span class='text-slate-100 font-bold'>Epoch 10/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0067</span> - val_loss: <span class='text-sky-400'>0.0050</span>
+<span class='text-slate-100 font-bold'>Epoch 11/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0067</span> - val_loss: <span class='text-sky-400'>0.0048</span>
+<span class='text-slate-100 font-bold'>Epoch 12/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0047</span>
+<span class='text-slate-100 font-bold'>Epoch 13/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0062</span> - val_loss: <span class='text-sky-400'>0.0045</span>
+<span class='text-slate-100 font-bold'>Epoch 14/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0064</span> - val_loss: <span class='text-sky-400'>0.0047</span>
+<span class='text-slate-100 font-bold'>Epoch 15/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0062</span> - val_loss: <span class='text-sky-400'>0.0051</span>
+<span class='text-slate-100 font-bold'>Epoch 16/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0050</span>
+<span class='text-slate-100 font-bold'>Epoch 17/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0050</span>
+<span class='text-slate-100 font-bold'>Epoch 18/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0049</span>
+<span class='text-slate-100 font-bold'>Epoch 19/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0045</span>
+<span class='text-slate-100 font-bold'>Epoch 20/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0050</span>
+<span class='text-slate-100 font-bold'>Epoch 21/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0064</span> - val_loss: <span class='text-sky-400'>0.0051</span>
+<span class='text-slate-100 font-bold'>Epoch 22/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0061</span> - val_loss: <span class='text-sky-400'>0.0047</span>
+<span class='text-slate-100 font-bold'>Epoch 23/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0061</span> - val_loss: <span class='text-sky-400'>0.0052</span>
+<span class='text-slate-100 font-bold'>Epoch 24/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0060</span> - val_loss: <span class='text-sky-400'>0.0048</span>
+<span class='text-slate-100 font-bold'>Epoch 25/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0051</span>
+<span class='text-slate-100 font-bold'>Epoch 26/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0061</span> - val_loss: <span class='text-sky-400'>0.0044</span>
+<span class='text-slate-100 font-bold'>Epoch 27/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0063</span> - val_loss: <span class='text-sky-400'>0.0044</span>
+<span class='text-slate-100 font-bold'>Epoch 28/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0061</span> - val_loss: <span class='text-sky-400'>0.0048</span>
+<span class='text-slate-100 font-bold'>Epoch 29/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0062</span> - val_loss: <span class='text-sky-400'>0.0044</span>
+<span class='text-slate-100 font-bold'>Epoch 30/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0064</span> - val_loss: <span class='text-sky-400'>0.0044</span>
+<span class='text-slate-100 font-bold'>Epoch 31/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0061</span> - val_loss: <span class='text-sky-400'>0.0051</span>
+<span class='text-slate-100 font-bold'>Epoch 32/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0061</span> - val_loss: <span class='text-sky-400'>0.0042</span>
+<span class='text-slate-100 font-bold'>Epoch 33/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0060</span> - val_loss: <span class='text-sky-400'>0.0044</span>
+<span class='text-slate-100 font-bold'>Epoch 34/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0060</span> - val_loss: <span class='text-sky-400'>0.0043</span>
+<span class='text-slate-100 font-bold'>Epoch 35/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0060</span> - val_loss: <span class='text-sky-400'>0.0044</span>
+<span class='text-slate-100 font-bold'>Epoch 36/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0059</span> - val_loss: <span class='text-sky-400'>0.0045</span>
+<span class='text-slate-100 font-bold'>Epoch 37/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0060</span> - val_loss: <span class='text-sky-400'>0.0045</span>
+<span class='text-slate-100 font-bold'>Epoch 38/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0059</span> - val_loss: <span class='text-sky-400'>0.0045</span>
+<span class='text-slate-100 font-bold'>Epoch 39/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0058</span> - val_loss: <span class='text-sky-400'>0.0044</span>
+<span class='text-slate-100 font-bold'>Epoch 40/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0060</span> - val_loss: <span class='text-sky-400'>0.0042</span>
+<span class='text-slate-100 font-bold'>Epoch 41/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0059</span> - val_loss: <span class='text-sky-400'>0.0046</span>
+<span class='text-slate-100 font-bold'>Epoch 42/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0059</span> - val_loss: <span class='text-sky-400'>0.0043</span>
+<span class='text-slate-100 font-bold'>Epoch 43/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0058</span> - val_loss: <span class='text-sky-400'>0.0046</span>
+<span class='text-slate-100 font-bold'>Epoch 44/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0059</span> - val_loss: <span class='text-sky-400'>0.0043</span>
+<span class='text-slate-100 font-bold'>Epoch 45/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0061</span> - val_loss: <span class='text-sky-400'>0.0045</span>
+<span class='text-slate-100 font-bold'>Epoch 46/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0058</span> - val_loss: <span class='text-sky-400'>0.0043</span>
+<span class='text-slate-100 font-bold'>Epoch 47/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0058</span> - val_loss: <span class='text-sky-400'>0.0048</span>
+<span class='text-slate-100 font-bold'>Epoch 48/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0058</span> - val_loss: <span class='text-sky-400'>0.0043</span>
+<span class='text-slate-100 font-bold'>Epoch 49/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0058</span> - val_loss: <span class='text-sky-400'>0.0043</span>
+<span class='text-slate-100 font-bold'>Epoch 50/50</span>
+142/142 <span class='text-emerald-500'>━━━━━━━━━━━━━━━━━━━━</span> 0s 3ms/step - loss: <span class='text-amber-400'>0.0057</span> - val_loss: <span class='text-sky-400'>0.0042</span>
+
+<span class='text-sky-400'>[7] Realizando predições no conjunto de teste...</span>
+<span class='text-slate-400'>------------------------------</span>
+<span class='text-white font-bold'> RESULTADOS DO MODELO LSTM </span>
+<span class='text-slate-400'>------------------------------</span>
+<span class='text-fuchsia-400 font-bold'>RMSE : 19775.38 W</span>
+<span class='text-fuchsia-400 font-bold'>MAPE : 17.93 %</span>
+<span class='text-slate-400'>------------------------------</span>
+<span class='text-sky-400'>[8] Salvando artefatos (Gráfico e Logs)...</span>

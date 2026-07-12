@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle - ML Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #cbd5e1; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        .terminal { background-color: #020617; color: #4ade80; font-family: 'Consolas', 'Courier New', monospace; }
+        .blinking-cursor::after { content: '█'; animation: blink 1s step-start infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        #image-modal { background-color: rgba(15, 23, 42, 0.98); transition: opacity 0.2s; overflow: hidden; }
+        #modal-img-container { display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        #modal-img { 
+            cursor: grab; 
+            transition: transform 0.05s ease-out; 
+            max-width: 100%; max-height: 100%; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #334155;
+            transform-origin: center;
+        }
+        #modal-img:active { cursor: grabbing; }
+
+        input[type=number] { background-color: #1e293b; border: 1px solid #334155; color: #f8fafc; transition: all 0.2s; }
+        input[type=number]:focus { border-color: #38bdf8; outline: none; box-shadow: 0 0 0 1px #38bdf8; }
+
+        /* Barra de redimensionamento */
+        #resizer { cursor: col-resize; transition: background-color 0.2s; }
+        #resizer:hover, #resizer.active { background-color: #38bdf8; }
+    </style>
+</head>
+<body class="h-screen w-screen flex overflow-hidden selection:bg-sky-500 selection:text-white">
+
+    <!-- PAINEL ESQUERDO -->
+    <div id="left-panel" class="w-1/3 h-full border-r border-slate-700 bg-slate-900 p-6 overflow-y-auto transition-all duration-300 flex-shrink-0 relative z-10 shadow-2xl">
+        <h1 class="text-xl font-semibold mb-6 text-slate-100 border-b border-slate-700 pb-3">Instâncias Treinadas</h1>
+        
+        <h2 class="text-sm font-semibold text-sky-400 mb-3 uppercase tracking-wider">Histórico de Validação (Slides)</h2>
+        <div id="gallery-slides" class="grid grid-cols-2 gap-3 mb-8"></div>
+
+        <h2 class="text-sm font-semibold text-emerald-400 mb-3 uppercase tracking-wider">Lotes de Teste Recentes</h2>
+        <div id="gallery-tests" class="grid grid-cols-2 gap-3"></div>
+    </div>
+
+    <!-- PAINEL DIREITO -->
+    <div id="right-panel" class="flex-1 h-full p-8 flex flex-col overflow-hidden bg-slate-800 transition-all duration-300">
+        
+        <!-- MENU DE CONTROLES -->
+        <div id="control-menu" class="max-w-4xl mx-auto w-full bg-slate-900 p-8 rounded-sm border border-slate-700 shadow-xl flex-shrink-0">
+            <div class="flex justify-between items-end mb-6 border-b border-slate-700 pb-4">
+                <div>
+                    <h2 class="text-2xl font-semibold text-slate-100">Parâmetros do Modelo LSTM</h2>
+                    <p class="text-slate-400 text-sm mt-1">Configure os hiperparâmetros antes de despachar o job de treinamento.</p>
+                </div>
+                <button id="btn-reset-all" onclick="resetarTodos()" class="hidden text-sm text-sky-400 hover:text-sky-300 font-medium">
+                    Restaurar Padrões
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <label class="text-sm font-medium text-slate-300" title="Tempo futuro a prever (1 = 15min).">Horizonte de Predição</label>
+                        <button id="reset-horizonte" onclick="resetarCampo('horizonte')" class="hidden text-xs text-sky-400 hover:text-sky-300">Reset</button>
+                    </div>
+                    <input type="number" id="horizonte" value="1" class="w-full rounded-sm p-2.5 text-sm" oninput="verificarAlteracoes()">
+                </div>
+                
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <label class="text-sm font-medium text-slate-300" title="Quantidade de passos de histórico analisados (Ex: 8 passos = 2 horas).">Tamanho da Janela</label>
+                        <button id="reset-janela" onclick="resetarCampo('janela')" class="hidden text-xs text-sky-400 hover:text-sky-300">Reset</button>
+                    </div>
+                    <input type="number" id="janela" value="8" class="w-full rounded-sm p-2.5 text-sm" oninput="verificarAlteracoes()">
+                </div>
+
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <label class="text-sm font-medium text-slate-300" title="Neurônios da camada inicial.">Camada Oculta 1 (LSTM)</label>
+                        <button id="reset-lstm1" onclick="resetarCampo('lstm1')" class="hidden text-xs text-sky-400 hover:text-sky-300">Reset</button>
+                    </div>
+                    <input type="number" id="lstm1" value="100" class="w-full rounded-sm p-2.5 text-sm" oninput="verificarAlteracoes()">
+                </div>
+
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <label class="text-sm font-medium text-slate-300" title="Neurônios da camada de refinamento temporal.">Camada Oculta 2 (LSTM)</label>
+                        <button id="reset-lstm2" onclick="resetarCampo('lstm2')" class="hidden text-xs text-sky-400 hover:text-sky-300">Reset</button>
+                    </div>
+                    <input type="number" id="lstm2" value="50" class="w-full rounded-sm p-2.5 text-sm" oninput="verificarAlteracoes()">
+                </div>
+
+                <div class="col-span-2">
+                    <div class="flex justify-between mb-1">
+                        <label class="text-sm font-medium text-slate-300" title="Ciclos completos de treinamento na base de dados.">Ciclos de Treinamento (Epochs)</label>
+                        <button id="reset-epocas" onclick="resetarCampo('epocas')" class="hidden text-xs text-sky-400 hover:text-sky-300">Reset</button>
+                    </div>
+                    <input type="number" id="epocas" value="50" class="w-full rounded-sm p-2.5 text-sm" oninput="verificarAlteracoes()">
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-700 flex justify-end">
+                <button onclick="iniciarTreinamento()" class="bg-sky-600 hover:bg-sky-500 text-white text-sm font-medium py-2.5 px-6 rounded-sm shadow transition duration-150">
+                    Executar Processamento
+                </button>
+            </div>
+        </div>
+
+        <!-- TERMINAL -->
+        <div id="terminal-container" class="hidden flex-1 min-h-0 flex-col max-w-5xl mx-auto w-full mt-4 pb-4">
+            <h3 class="text-sm font-semibold text-slate-400 mb-2 uppercase tracking-wider flex-shrink-0">Console de Instância - GPU Acelerada</h3>
+            <div id="terminal-output" class="terminal flex-1 overflow-y-auto rounded-sm border border-slate-700 p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-inner"></div>
+        </div>
+    </div>
+
+    <!-- MODAL DIVIDIDO: IMAGEM + LOGS (COM RESIZE) -->
+    <div id="image-modal" class="hidden fixed inset-0 z-50 flex flex-col">
+        <div class="h-12 w-full px-6 flex justify-between items-center bg-slate-900 border-b border-slate-700 z-10 flex-shrink-0 shadow-lg">
+            <span class="text-slate-300 text-sm font-medium uppercase tracking-widest">Painel de Artefatos</span>
+            <button onclick="fecharModal()" class="text-slate-400 hover:text-white text-3xl font-light leading-none outline-none">&times;</button>
+        </div>
+        
+        <!-- container principal da imagem + logs -->
+        <div class="flex flex-1 w-full p-4 overflow-hidden" id="modal-content-area">
+            
+            <!-- Área da Imagem -->
+            <div id="modal-img-container" class="flex-1 bg-slate-900 rounded-sm border border-slate-700 relative">
+                <span class="absolute top-2 left-2 z-20 text-xs text-slate-500 pointer-events-none">Scroll: Zoom | Mouse: Arrastar</span>
+                <img id="modal-img" src="" draggable="false">
+            </div>
+            
+            <!-- DIVISOR PARA REDIMENSIONAMENTO -->
+            <div id="resizer" class="w-2 mx-2 bg-slate-800 rounded-full flex items-center justify-center">
+                <div class="h-8 w-0.5 bg-slate-500 rounded"></div>
+            </div>
+
+            <!-- Área dos Logs -->
+            <div id="log-panel" class="w-[450px] bg-[#020617] rounded-sm border border-slate-700 flex flex-col flex-shrink-0">
+                <div class="p-3 border-b border-slate-700 text-slate-300 font-semibold text-xs tracking-wider uppercase bg-slate-900">
+                    Logs da Instância (.txt)
+                </div>
+                <!-- REMOVI a cor verde fixa aqui, agora usa as tags HTML que vêm do python -->
+                <div id="modal-logs" class="p-4 flex-1 overflow-y-auto text-xs font-mono whitespace-pre-wrap text-slate-300">
+                    Carregando logs...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        const DEFAULTS = { horizonte: 1, janela: 8, lstm1: 100, lstm2: 50, epocas: 50 };
+
+        function verificarAlteracoes() {
+            let algumaMudanca = false;
+            for (let chave in DEFAULTS) {
+                const el = document.getElementById(chave);
+                const btnReset = document.getElementById(`reset-${chave}`);
+                if (parseInt(el.value) !== DEFAULTS[chave]) {
+                    btnReset.classList.remove('hidden');
+                    algumaMudanca = true;
+                } else {
+                    btnReset.classList.add('hidden');
+                }
+            }
+            const btnResetAll = document.getElementById('btn-reset-all');
+            if (algumaMudanca) btnResetAll.classList.remove('hidden');
+            else btnResetAll.classList.add('hidden');
+        }
+
+        function resetarCampo(chave) {
+            document.getElementById(chave).value = DEFAULTS[chave];
+            verificarAlteracoes();
+        }
+
+        function resetarTodos() {
+            for (let chave in DEFAULTS) { document.getElementById(chave).value = DEFAULTS[chave]; }
+            verificarAlteracoes();
+        }
+
+        function gerarThumbHTML(imgName, isSlide) {
+            let deleteBtn = isSlide ? '' : `<button onclick="event.stopPropagation(); deletarImagem('${imgName}')" class="absolute top-1 right-1 bg-red-600 hover:bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity font-bold shadow text-xs z-10">X</button>`;
+            return `
+                <div class="relative group h-20 rounded-sm border border-slate-700 overflow-hidden cursor-pointer bg-slate-800" onclick="abrirModal('/imgs/${imgName}')">
+                    <img src="/imgs/${imgName}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" title="${imgName}">
+                    ${deleteBtn}
+                </div>
+            `;
+        }
+
+        function carregarGaleria() {
+            fetch('/listar_imagens')
+                .then(res => res.json())
+                .then(data => {
+                    const slidesDiv = document.getElementById('gallery-slides');
+                    const testsDiv = document.getElementById('gallery-tests');
+                    slidesDiv.innerHTML = ''; testsDiv.innerHTML = '';
+
+                    data.slides.forEach(img => { slidesDiv.innerHTML += gerarThumbHTML(img, true); });
+                    data.testes.forEach(img => { testsDiv.innerHTML += gerarThumbHTML(img, false); });
+                });
+        }
+
+        function deletarImagem(imgName) {
+            if(confirm("Excluir este teste e seus logs?")) {
+                fetch(`/deletar/${imgName}`, { method: 'DELETE' })
+                    .then(res => res.json())
+                    .then(data => carregarGaleria());
+            }
+        }
+
+        function iniciarTreinamento() {
+            const params = {
+                horizonte: document.getElementById('horizonte').value,
+                janela: document.getElementById('janela').value,
+                lstm1: document.getElementById('lstm1').value,
+                lstm2: document.getElementById('lstm2').value,
+                epocas: document.getElementById('epocas').value,
+            };
+
+            document.getElementById('left-panel').classList.add('w-0', 'p-0', 'opacity-0');
+            document.getElementById('left-panel').classList.remove('p-6');
+            document.getElementById('control-menu').classList.add('hidden');
+            
+            const termContainer = document.getElementById('terminal-container');
+            termContainer.classList.remove('hidden');
+            termContainer.classList.add('flex');
+            
+            const term = document.getElementById('terminal-output');
+            term.innerHTML = '<span class="text-sky-400">admin@ml-compute-01</span>:<span class="text-slate-300">~/app</span>$ python ml_engine.py\n<span class="blinking-cursor"></span>';
+
+            fetch('/iniciar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) })
+                .then(() => conectarLogs());
+        }
+
+        function conectarLogs() {
+            const evtSource = new EventSource("/stream_logs");
+            const term = document.getElementById('terminal-output');
+
+            evtSource.onmessage = function(e) {
+                let msg = e.data;
+                if(msg.startsWith("FINALIZADO:")) {
+                    evtSource.close();
+                    let img_name = msg.split(":")[1];
+                    setTimeout(() => {
+                        carregarGaleria();
+                        document.getElementById('left-panel').classList.remove('w-0', 'p-0', 'opacity-0');
+                        document.getElementById('left-panel').classList.add('p-6');
+                        document.getElementById('control-menu').classList.remove('hidden');
+                        document.getElementById('terminal-container').classList.add('hidden');
+                        document.getElementById('terminal-container').classList.remove('flex');
+                        abrirModal('/imgs/' + img_name);
+                    }, 2000);
+                    return;
+                }
+                term.innerHTML = term.innerHTML.replace('<span class="blinking-cursor"></span>', '');
+                term.innerHTML += msg + '\n<span class="blinking-cursor"></span>';
+                requestAnimationFrame(() => { term.scrollTop = term.scrollHeight; });
+            }
+        }
+
+        // LÓGICA DO MODAL & PAN/ZOOM
+        const modal = document.getElementById('image-modal');
+        const img = document.getElementById('modal-img');
+        const imgContainer = document.getElementById('modal-img-container');
+        const modalLogs = document.getElementById('modal-logs');
+        
+        let scale = 1, panning = false, pointX = 0, pointY = 0, startX = 0, startY = 0;
+
+        function setTransform() { img.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`; }
+
+        function abrirModal(src) {
+            img.src = src;
+            scale = 1; pointX = 0; pointY = 0;
+            setTransform();
+            modal.classList.remove('hidden');
+
+            // Carrega os logs
+            let txtFileName = src.split('/').pop().replace('.png', '.txt');
+            fetch('/logs/' + txtFileName)
+                .then(response => {
+                    if(!response.ok) return "<span class='text-slate-500'>[LOGS NÃO ENCONTRADOS] Arquivo antigo gerado antes da atualização do sistema.</span>";
+                    return response.text();
+                })
+                .then(text => {
+                    // Usa innerHTML pra renderizar as cores do span
+                    modalLogs.innerHTML = text;
+                    modalLogs.scrollTop = modalLogs.scrollHeight; 
+                });
+        }
+
+        function fecharModal() {
+            modal.classList.add('hidden');
+            img.src = "";
+            modalLogs.innerHTML = "Carregando logs...";
+        }
+
+        imgContainer.onwheel = function(e) {
+            e.preventDefault();
+            let delta = (e.deltaY < 0) ? 0.2 : -0.2;
+            scale = Math.max(0.2, Math.min(scale + delta, 10));
+            setTransform();
+        }
+
+        imgContainer.onmousedown = function(e) {
+            e.preventDefault();
+            startX = e.clientX - pointX;
+            startY = e.clientY - pointY;
+            panning = true;
+        }
+
+        imgContainer.onmousemove = function(e) {
+            if (!panning) return;
+            e.preventDefault();
+            pointX = e.clientX - startX;
+            pointY = e.clientY - startY;
+            setTransform();
+        }
+
+        imgContainer.onmouseup = function() { panning = false; }
+        imgContainer.onmouseleave = function() { panning = false; }
+
+
+        // LÓGICA DO RESIZER (Barra lateral dos logs)
+        const resizer = document.getElementById('resizer');
+        const logPanel = document.getElementById('log-panel');
+        let isResizing = false;
+
+        resizer.addEventListener('mousedown', function(e) {
+            isResizing = true;
+            document.body.style.cursor = 'col-resize';
+            resizer.classList.add('bg-sky-500'); // Efeito visual ao segurar
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isResizing) return;
+            
+            // Calcula a largura nova: Distância da direita da tela até o mouse
+            let novaLargura = document.body.clientWidth - e.clientX - 24; // 24 = padding/margem
+            
+            // Limites do painel (min 250px, max 800px)
+            if (novaLargura < 250) novaLargura = 250;
+            if (novaLargura > 800) novaLargura = 800;
+            
+            logPanel.style.width = novaLargura + 'px';
+        });
+
+        document.addEventListener('mouseup', function(e) {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = 'default';
+                resizer.classList.remove('bg-sky-500');
+            }
+        });
+
+        carregarGaleria();
+    </script>
+</body>
+</html>
